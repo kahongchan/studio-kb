@@ -1,0 +1,17 @@
+{
+  "asset": "enemy_mercenary_001",
+  "type": "concept",
+  "status": "selected",
+  "model": "Qwen-Image-2512",
+  "version": "4-bit MLX",
+  "license": "Apache-2.0",
+  "prompt": "（生成用的 prompt）",
+  "seed": 123456,
+  "generated_at": "2026-11-01T22:15:00+08:00",
+  "edited_by": ["Qwen-Image-Edit", "Blender（人手）"],
+  "source_references": [],
+  "drive_url": "https://drive.google.com/file/d/（檔案 ID）",
+  "game_path": null,
+  "steam_ai_disclosure": true,
+  "notes": "這是範例，複製後改名使用"
+}

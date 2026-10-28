@@ -1,0 +1,26 @@
+# 密碼和本機設定，永遠不要 commit
+.env
+.env.*
+*.pem
+*.key
+*.p12
+auth.json
+.credentials.json
+secrets/
+AGENTS.override.md
+
+# 系統檔案
+.DS_Store
+Thumbs.db
+
+# 大檔案放 Google Drive，不放這裡
+*.png
+*.jpg
+*.jpeg
+*.psd
+*.blend
+*.fbx
+*.glb
+*.mp4
+*.wav
+*.mp3
