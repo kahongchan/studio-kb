@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# 遙控台唯一可以執行的指令。只轉發 status 和 plan 給 orchestrator。
+# 用法：./desk status   或   ./desk plan "目標"
+set -euo pipefail
+ORCH_DIR="${ORCH_DIR:-$HOME/studio/studio-orchestrator}"
+cd "$ORCH_DIR"
+case "${1:-}" in
+  status) python3 orchestrator.py status ;;
+  plan)   shift; [ -n "${1:-}" ] || { echo "用法：./desk plan \"目標\""; exit 2; }
+          python3 orchestrator.py plan "$*" ;;
+  *)      echo "只支援：status、plan"; exit 2 ;;
+esac

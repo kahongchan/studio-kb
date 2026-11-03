@@ -35,6 +35,8 @@
 3. ChatGPT Project 的指示加入 `proposals/README.md` 最後那一句。
 
 ## 第 2 步：Mac Studio（到手後）
+> 完整的 Mac Studio 設定（電源、用戶、工具、實測、手機遙控）見 `docs/15-Mac-Studio設定步驟.md`。以下只是 studio-kb 相關的部分。
+
 1. 開 GitHub 機器帳戶（例如 `<你的帳戶>-bot`；條款容許一個免費機器帳戶，只可以做自動化）。
 2. 用個人帳戶邀請機器帳戶為 `studio-kb` 和遊戲 repo 的協作者。
 3. 在 `factory` macOS 用戶：

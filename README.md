@@ -20,6 +20,7 @@
 | `docs/12-工具預算.md` | 訂閱和工具價格、分階段預算 |
 | `docs/13-ChatGPT研究簡報-遙距控制.md` | 給 ChatGPT 的研究任務 |
 | `docs/14-AI共用檔案方法.md` | 這個 repo 怎樣運作 |
+| `docs/15-Mac-Studio設定步驟.md` | **Mac Studio 到手後的設定步驟**（6 個階段、實測表、停電處理） |
 | `docs/專案指示-Project-Instructions.md` | 貼到 Claude Project 的指示 |
 
 ## 其他資料夾
@@ -28,3 +29,4 @@
 | `proposals/` | 其他 AI 的修改建議，一個建議一個檔案 |
 | `assets/records/` | 每個 AI 資產的來源紀錄（JSON），大檔案本身放 Google Drive |
 | `scripts/` | commit 前檢查密碼和 token |
+| `mac-setup/` | Mac Studio 設定腳本：電源、建立用戶、Brewfile、檢查、開機自動啟動、手機遙控台 |

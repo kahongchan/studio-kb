@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./desk status)",
+      "Bash(./desk plan *)",
+      "Read(~/studio/studio-kb/**)",
+      "Read(~/studio/studio-orchestrator/**)"
+    ],
+    "deny": [
+      "Edit",
+      "Write",
+      "Bash(git *)",
+      "Bash(rm *)",
+      "Bash(curl *)"
+    ]
+  }
+}

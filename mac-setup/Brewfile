@@ -1,0 +1,18 @@
+# 在管理員帳戶執行：brew bundle --file=mac-setup/Brewfile
+# factory 只使用這些工具，不自行安裝。
+tap "oven-sh/bun"
+
+brew "git"
+brew "git-lfs"
+brew "gh"
+brew "gitleaks"
+brew "tmux"
+brew "jq"
+brew "node"
+brew "uv"
+brew "macmon"
+brew "oven-sh/bun/bun"   # Claude Code Channels 的外掛要用 Bun
+
+cask "lm-studio"
+# Tailscale：到 tailscale.com 下載 Standalone 版本，不經 Homebrew，避免裝錯版本
+# Unity Hub：在 factory 用戶從 unity.com 下載
