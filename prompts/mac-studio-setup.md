@@ -10,6 +10,8 @@
 | P1 | Codex | `openclaw-to-hermes` | 維運 repo 加入和 studio-kb 的分工說明 | 只改該 repo 的 AGENTS、README |
 | P2 ✅ | Claude Code | `~/Projects/studio-kb` | 按 P0 的報告更新 studio-kb，開 PR | 開分支和 PR，你合併 |
 | P3 | Codex | `openclaw-to-hermes` | （之後）把 studio-kb 和遊戲 repo 註冊到 AO、加入 bridge allowlist | 改 AO 和 bridge 設定，要你批准 |
+| P5 | Codex | `openclaw-to-hermes` | 本地模型實測：安裝 LM Studio、下載模型、量度速度（T1）、用 OpenCode 和 Codex 本地設定做小任務（T5） | 安裝軟件前先問你；結果寫入 `~/Projects/local-model-tests/RESULTS.md` |
+| P6 | Claude Code | `~/Projects/studio-kb` | 把 P5 的結果填入 `docs/15` 的 T1～T5 表，開 PR | 開分支和 PR，你合併 |
 
 ---
 
@@ -111,3 +113,106 @@ gh auth status                                                      # 確認只�
 codex exec "讀 AGENTS.md 和 docs/02-決策記錄.md，再讀 ~/Projects/openclaw-to-hermes 的 AGENTS.md。檢查兩個 repo 的紅線有沒有矛盾、studio-kb 有沒有密碼或 token、有沒有任何地方把 Claude 訂閱登入交給第三方工具。只報告，不要修改任何檔案。"
 ```
 `codex exec` 預設唯讀，不會改檔案。如果 openclaw-to-hermes 不在 `~/Projects`，改成實際路徑。
+
+---
+
+## P5：本地模型實測 T1 和 T5（Codex，在 `openclaw-to-hermes` 工作副本）
+
+> 2026-11-05 加入。來源：claude.ai Project 討論「本地模型 getting started」（第 1～4 步）。
+> **為甚麼分成 P5 和 P6：** 安裝軟件是基建，由 Codex 在 `openclaw-to-hermes` 做和記錄；`studio-kb` 由 Claude Code 維護（`docs/02` 2026-11-05「兩個 repo 分工」）。P5 把結果寫入兩個 repo 以外的 `~/Projects/local-model-tests/RESULTS.md`，P6 由 Claude Code 讀它再填入 `docs/15`，兩個 AI 不會同時改同一份文件。
+> **期限：** 退貨期要在 2026-11-14 或之前決定（`docs/02` 待決 #18）。模型合共約 130GB，下載要時間，建議今晚開始。
+> **範圍：** 只做 T1 和 T5。T2～T4 要開 Unity 場景、Blender、Draw Things，要你在畫面前做，見本節最後。
+
+```text
+先照 AGENTS.md 執行 preflight（python3 hermes-staging/sync_before_work.py --personal-github），exit 3 就重讀指令再跑。
+
+背景：這部是我的 Mac Studio（M5 Max 128GB、4TB），macOS 帳戶 billychan。我要在退貨期內測試本地模型，決定留下 128GB 還是退貨。這是我第一次用本地模型。知識庫在 ~/Projects/studio-kb，先讀它的 AGENTS.md、docs/15-Mac-Studio設定步驟.md 第 3 階段、docs/04-AI分工與自動化架構.md；只讀，不要修改 studio-kb。
+
+任務：照以下 4 步裝好本地模型、量度速度（T1），並用兩個 agent 工具接本地模型做一個小任務（T5）。全部結果寫入 ~/Projects/local-model-tests/RESULTS.md。
+
+## 規則（全程遵守）
+- 安裝任何軟件前，先列出：名稱、安裝方法（優先用 studio-kb 的 mac-setup/Brewfile 已列的項目）、來源、大約大小，等我確認才裝。不用 curl | sh 的安裝方式，除非是官方唯一的方法，而且先問我。
+- 不要用 sudo，不改系統設定。模型載入失敗、提示 GPU 記憶體不足，就停下來告訴我，不要自行執行 sysctl iogpu.wired_limit_mb。
+- LM Studio 的伺服器只綁 127.0.0.1，「在區域網絡提供服務」保持關閉；不設 API key 以外的任何對外存取。
+- 不改 AO、Hermes、ao-bridge、Tailscale 的設定；不改 gh 帳戶；不碰公司帳戶。
+- 不改你自己平時用的 ~/.codex/config.toml。測試 Codex 本地設定時，一律用另一個設定目錄：CODEX_HOME=~/.codex-local。
+- 不設定 ANTHROPIC_API_KEY 或 OPENAI_API_KEY；不要把 Claude Code 接到本地模型（例如設定 ANTHROPIC_BASE_URL），這是 studio-kb 的紅線。
+- 同一時間只載入一個大模型；換模型前先 unload，避免互相搶記憶體。
+- 照本 repo 的規則（查看 → 備份 → 修改 → 驗證）記錄這次安裝；需要更新 LIVE-STATE 或操作紀錄的，照本 repo 的方式做，並告訴我改了哪些檔案。
+- 回覆和 RESULTS.md 都不要寫 token、密碼、IP、序號。
+
+## 第 1 步：安裝 LM Studio 和監察工具
+1. 檢查現況：LM Studio、lms 指令、macmon、uv、node 是否已安裝，以及版本。報告後等我確認才安裝缺少的項目（LM Studio 和 macmon 都在 Brewfile）。
+2. 裝好 LM Studio 後，開一次讓它完成初次設定，然後用 LM Studio 自帶的方法把 lms 指令加入 PATH（例如 lms bootstrap，以官方文件為準）。
+3. 確認 LM Studio 的推理引擎有 MLX（Apple Silicon 用 MLX 版本模型）。報告 LM Studio 版本、MLX 引擎版本，以及它的本機伺服器是否支援 OpenAI Responses API（/v1/responses）；Codex CLI 2026 年 2 月起只支援 Responses API，這一點決定 Codex 能否接 LM Studio。
+
+## 第 2 步：下載三個模型（MLX 4-bit）
+1. 用 lms 搜尋並下載以下三個模型的 MLX 4-bit 版本，優先選 lmstudio-community 或 mlx-community 發佈的：
+   - Qwen3-Coder-Next（80B 總參數、約 3B active，4-bit 約 46GB）：主力寫碼候選
+   - Qwen3.8-27B（dense，4-bit 約 16GB，支援看圖）：第二個寫碼候選
+   - gpt-oss-120b（約 65GB）：對照組
+2. 下載前先報告每個模型的確實名稱、發佈者、檔案大小和授權（看模型卡），以及磁碟剩餘空間，等我確認才下載。如果找不到我寫的名稱，列出最接近的選擇讓我揀，不要自行換成其他模型。
+3. 下載期間可以先做第 3 步的準備（寫量度腳本、建測試 repo），但不要載入未下載完的模型。
+
+## 第 3 步：T1，每個模型的速度和記憶體
+1. 建立 ~/Projects/local-model-tests（普通資料夾，git init 但不設 remote，不要放入任何現有 repo）。量度腳本放這裡，用 Python 標準庫或 uv 管理的環境，不要用系統 Python 裝套件。
+2. 每個模型逐一做：
+   a. lms load <模型> --context-length 65536（以 lms 實際參數為準），記錄載入時間和 lms ps 顯示的佔用記憶體。
+   b. lms server start，確認只聽 127.0.0.1:1234。
+   c. 經 http://127.0.0.1:1234/v1 量度兩種情況，各跑 3 次取中位數：
+      - 短 prompt（約 100 tokens），生成約 400 tokens：生成速度 tok/s、首個 token 時間。
+      - 長 prompt（約 32K tokens，例如重複貼上一份程式碼），生成約 200 tokens：prompt 處理速度 tok/s、首個 token 時間、生成速度。
+      生成速度用 API 回傳的 usage 和實際時間計算；LM Studio 有自己的統計就一併記錄。
+   d. 量度期間每秒記錄一次記憶體：macmon（如有）、sysctl vm.swapusage、memory_pressure 或 vm_stat。記錄最高記憶體用量、有沒有 swap、記憶體壓力最差時的狀態。
+   e. lms unload，等記憶體回落再做下一個。
+3. 原始數據存入 ~/Projects/local-model-tests/t1/，摘要寫入 RESULTS.md 的「T1」表：模型、確實名稱、量化、檔案大小、載入後記憶體、短 prompt 生成 tok/s、長 prompt 處理 tok/s、長 prompt 生成 tok/s、首個 token 時間、swap、備註。
+
+## 第 4 步：T5，經 agent 工具用本地模型完成小任務（先不經 AO）
+1. 在 ~/Projects/local-model-tests/sandbox 建立測試 repo（只在本機，不上 GitHub）：Python、用 uv 管理、有 pytest；main 分支有一個空的 combat.py 和 tests/。先 commit 一個乾淨的起點，每次測試前都 git reset 回這個起點。
+2. 任務（每次測試都用同一句，原文照貼）：
+   「在 combat.py 加一個 calc_damage(attack: int, defense: int, crit: bool) -> int 函數：傷害 = max(1, attack - defense)，crit 為 True 時乘 2；在 tests/test_combat.py 加三個 pytest 測試（一般、防禦高於攻擊、暴擊），然後執行測試，全部通過才算完成。」
+3. 兩個工具：
+   a. OpenCode：先報告官方安裝方法和版本，等我確認才裝。設定一個 openai-compatible provider 指向 http://127.0.0.1:1234/v1，只用於這個測試。
+   b. Codex 本地設定：CODEX_HOME=~/.codex-local，用 Codex 內建的 lmstudio provider（--oss --local-provider lmstudio，以 codex --help 的實際參數為準），在 sandbox 用 codex exec --sandbox workspace-write 執行任務。如果第 1 步發現 LM Studio 不支援 Responses API，這一項記為「不能接」，寫明錯誤訊息，不要裝 proxy 繞過。
+4. 測試組合，每個組合跑 2 次：
+   - OpenCode + Qwen3-Coder-Next
+   - OpenCode + Qwen3.8-27B
+   - Codex 本地 + Qwen3-Coder-Next
+   - （如時間許可）Codex 本地 + gpt-oss-120b
+5. 每次記錄：是否一次成功（pytest 全部通過、沒有我介入）、耗時、工具呼叫有沒有出錯（例如格式錯、無限循環、改錯檔案）、最終 git diff 行數。超過 15 分鐘未完成就中止，記為失敗。
+6. 你用自己的判斷看一次每個成功的 diff，用一句話評價程式碼質素（不要修改它）。
+7. 原始 log 存入 ~/Projects/local-model-tests/t5/，摘要寫入 RESULTS.md 的「T5」表。
+
+## 最後
+1. RESULTS.md 開頭寫：日期、macOS 版本、LM Studio 和 MLX 引擎版本、OpenCode 和 Codex 版本、每個模型的確實名稱和授權。
+2. 最後加一段「觀察」：哪個模型和工具組合最適合做寫碼工人、128GB 在 T1 的情況下是否緊張、有沒有我需要決定的事。只寫觀察，不要寫「建議留下或退貨」，那個要等 T2～T4。
+3. 用表格回覆我 T1 和 T5 的摘要，以及你在 openclaw-to-hermes 改了哪些檔案。不要 commit 或 push openclaw-to-hermes，先給我看 diff。
+4. 完成後所有模型 unload，LM Studio 伺服器停止（lms server stop），不要讓它常駐。
+```
+
+### T2～T4：要你在 Mac Studio 前面做（P5 之後）
+- **T2：** LM Studio 載入 Qwen3-Coder-Next（64K），開 Unity 6 一個 3D 場景（例如 URP 範例場景，播放中），同時開 Blender 渲染一個範例檔。看活動監視器「記憶體」分頁的記憶體壓力顏色和「已使用的交換空間」，拍一張截圖。
+- **T3：** T2 再加 Draw Things（或 LM Studio 以外的圖像模型）同時出圖，看會否 swap 或卡死。
+- **T4：** 可以叫 Codex 寫一個連續兩小時生成的腳本，同時用 macmon 記錄溫度和 tok/s；開始前先確認你在附近。
+- 結果截圖或數字直接告訴 Claude，P6 會一併填入。
+
+---
+
+## P6：把 P5 的結果寫入 studio-kb（Claude Code，在 `~/Projects/studio-kb`）
+
+```text
+照 AGENTS.md 的規則：開分支 kb/<今日日期>-local-model-tests，不要改 main。
+
+1. 讀 ~/Projects/local-model-tests/RESULTS.md（P5 的結果）。如果檔案不存在或 T1、T5 未完成，停下來告訴我，不要猜。
+2. docs/15 第 3 階段：
+   a. 「實際進度」更新：已安裝的工具和版本、已下載的模型、T1 和 T5 的完成日期。
+   b. T1～T5 表的「結果」欄：T1、T5 填入摘要（每格兩三行，詳細數據寫「見 ~/Projects/local-model-tests/RESULTS.md」）。T2～T4 如我在這個 session 提供了結果就一併填入，否則寫「⬜ 未做」。
+   c. T5 的「測試」欄原本寫 Aider，改為「OpenCode 和 Codex 本地設定 + 本地模型（2026-11-05 改：AO 支援這兩個工具，Aider 不再是主要選項）」，原文保留在括號內。
+3. docs/05 模型清單：加入實測過的模型確實名稱、量化、授權和實測日期。
+4. docs/02：背景事實的 Mac Studio 現況加一行實測摘要；待決 #18 的「決定的關鍵」更新 T1、T5 已完成的部分。不要寫「決定留下或退貨」，等我決定。
+5. docs/08：加入 RESULTS.md 的來源和日期（本機實測）。
+6. commit，然後：
+   bash scripts/gh-personal.sh git push -u origin <分支>
+   bash scripts/gh-personal.sh gh pr create --base main --title "<標題>" --body "<改了甚麼、來源：P5 實測、日期>"
+   把 PR 連結給我。不要合併。
+```
