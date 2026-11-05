@@ -9,6 +9,7 @@
 | P0 ✅ | Claude Code | `~/Projects` | 把 studio-kb 加進 Mac Studio，對照實際狀態報告差異 | 只 clone |
 | P1 | Codex | `openclaw-to-hermes` | 維運 repo 加入和 studio-kb 的分工說明 | 只改該 repo 的 AGENTS、README |
 | P2 ✅ | Claude Code | `~/Projects/studio-kb` | 按 P0 的報告更新 studio-kb，開 PR | 開分支和 PR，你合併 |
+| P5 | Codex | `openclaw-to-hermes` | **退貨期內實測 T1～T5（2026-11-14 前）** | 安裝 macmon、LM Studio、Blender、Aider、mflux，下載三個模型；結果開 PR |
 | P3 | Codex | `openclaw-to-hermes` | （之後）把 studio-kb 和遊戲 repo 註冊到 AO、加入 bridge allowlist | 改 AO 和 bridge 設定，要你批准 |
 
 ---
@@ -95,6 +96,41 @@ gh auth status                                                      # 確認只�
    bash scripts/gh-personal.sh git push -u origin <分支>
    bash scripts/gh-personal.sh gh pr create --base main --title "<標題>" --body "<改了甚麼、來源>"
    把 PR 連結給我。不要合併。
+```
+
+---
+
+## P5：退貨期內實測 T1～T5（Codex，在 `openclaw-to-hermes` 工作副本）
+
+> 2026-11-05 加入。**2026-11-14 前完成**（`docs/02` 待決 #18）。下載約 130GB，加上 T4 兩小時，建議晚上開始。
+> 用 Codex：安裝工具和模型伺服器屬基建（`docs/02` 2026-11-05 的分工）；測試結果和建議另外寫入 studio-kb。
+
+```text
+先照本 repo 的 AGENTS.md 執行 preflight。
+
+任務：Mac Studio 退貨期內的實測（studio-kb 的 docs/15「第 3 階段」T1～T5），結果用來決定留下 M5 Max 128GB 還是退貨，期限 2026-11-14。先讀 ~/Projects/studio-kb 的 docs/15-Mac-Studio設定步驟.md 第 3 階段、docs/03-硬件方案比較.md 第三、四部分、docs/05-模型與工具清單.md。
+
+授權範圍（只限以下，全部在 billychan，不用 sudo）：
+- 安裝：brew install macmon；brew install --cask lm-studio blender；uv tool install --python 3.12 aider-chat；uv tool install mflux（T3 出圖用）。
+- 下載三個 MLX 4-bit 模型：Qwen3.8-27B、Qwen3-Coder-Next 80B-A3B、gpt-oss-120b。用 LM Studio 的 lms CLI 搜尋，優先選官方或 mlx-community 的版本；找不到完全相同的，選最接近的並報告實際的模型 ID 和大小。下載前先檢查可用空間。
+- LM Studio 伺服器只綁 127.0.0.1，不可以開放給 Tailscale 或區域網絡；context 設 64K。
+- 在 ~/Projects/bench/ 建立測試用的資料夾和 repo（不上 GitHub）。
+
+不可以做：不改 AO、Hermes、ao-bridge、Tailscale、電源或系統設定；不經 AO 派工；不用公司帳戶。開始前用 ao status 確認沒有 AO session 正在工作，有就停下來問我。如果模型因 GPU 記憶體上限載入失敗，不要自行執行 sudo sysctl，停下來告訴我。
+
+測試（每項都用 macmon 和 memory_pressure、sysctl vm.swapusage 記錄記憶體壓力和 swap）：
+- T1：三個模型各自在 64K context 下的生成速度（tok/s）、prompt 處理速度、佔用記憶體。
+- T2：Qwen3-Coder-Next 載入並持續生成，同時 Unity 6（6000.6.7f1）開一個新建的 3D URP 範例場景，Blender 用 CLI 背景渲染一個內建測試場景。
+- T3：T2 再加 mflux 用 4-bit FLUX 模型出圖。
+- T4：用背景腳本對 LM Studio 連續生成兩小時，每 5 分鐘記錄 tok/s、溫度、功耗，log 放 ~/Projects/bench/logs/；開始和結束各報告一次。
+- T5：用 Aider 接 LM Studio（OpenAI 相容 API，127.0.0.1）在測試 repo 完成一個小任務：加一個 calc_damage(attack, defense, crit) 函數和三個 pytest 單元測試；記錄是否一次成功、耗時、改了幾次。
+
+記錄：
+1. 基建部分（安裝了甚麼、版本、路徑、LM Studio 伺服器綁定和設定、模型存放位置和大小、回復方法）照本 repo 的規則寫入 LIVE-STATE 和 MIGRATION-STATUS，照規則處理 Drive 發布。
+2. 測試結果寫入 studio-kb：在 ~/Projects/studio-kb 開分支 kb/<日期>-phase3-bench，填好 docs/15 第 3 階段的表格（加「實測日期」），docs/03 加「實測結果」小節，docs/02 待決 #18 寫上你的建議（留下或退貨）和理由，理由要對照 docs/15 的判斷標準。用 bash scripts/gh-personal.sh git push 和 bash scripts/gh-personal.sh gh pr create 開 PR，不要合併。
+3. 不要寫入任何 token、IP、序號。
+
+最後報告（繁體中文）：T1～T5 結果表、你的建議和理由、裝了甚麼和怎樣移除、兩個 PR 或 commit 的連結。
 ```
 
 ---
