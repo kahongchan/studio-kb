@@ -29,4 +29,5 @@
 | `proposals/` | 其他 AI 的修改建議，一個建議一個檔案 |
 | `assets/records/` | 每個 AI 資產的來源紀錄（JSON），大檔案本身放 Google Drive |
 | `scripts/` | commit 前檢查密碼和 token |
+| `prompts/` | 給 Claude Code 的設定 prompts（`mac-studio-setup.md`：把專案加進 Mac Studio、連接 orchestrator、第一次真實運行） |
 | `mac-setup/` | Mac Studio 設定腳本：電源、建立用戶、Brewfile、檢查、開機自動啟動、手機遙控台 |
