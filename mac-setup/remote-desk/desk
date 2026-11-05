@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# 【2026-11-05 暫停使用】以自寫 Python orchestrator 為前提；實際使用的 Agent Orchestrator（AO）不適用。
+# 見 docs/02-決策記錄.md 2026-11-05。
 # 遙控台唯一可以執行的指令。只轉發 status 和 plan 給 orchestrator。
 # 用法：./desk status   或   ./desk plan "目標"
 set -euo pipefail

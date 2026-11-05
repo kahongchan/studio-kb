@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# 【2026-11-05 暫停使用】以自寫 Python orchestrator 為前提；實際使用的 Agent Orchestrator（AO）不適用。
+# 見 docs/02-決策記錄.md 2026-11-05。
 # factory 登入時自動開三個 tmux 視窗：
 #   rc   ：Remote Control 伺服器（手機 Claude app 操作遊戲 repo，每個 session 一個 worktree）
 #   desk ：Discord Channels（只可以查狀態、加任務）
