@@ -9,6 +9,8 @@
 
 ## 修改規則
 - **不要直接改 `main`。** 一律開分支（`kb/<日期>-<主題>`）和 PR，由擁有者合併。
+- **同一個工作副本，同一時間只有一個 agent 修改。** Claude Code 和 Codex 共用 `~/Projects/studio-kb`。開始修改前執行 `git status`：有不是你做的未 commit 修改，或者目前不在 `main`、也不在你自己的分支，就停下來問擁有者，不要 stash、reset 或覆蓋。要和另一個 agent 同時工作，就用 `git worktree add ../studio-kb-<名稱> -b kb/<日期>-<主題>` 開獨立的工作資料夾，完成後 `git worktree remove`。
+- 在 Mac Studio 上 push 和開 PR，一律經 `bash scripts/gh-personal.sh`，只用個人帳戶 kahongchan。
 - 改決定時，同時修改 `docs/02-決策記錄.md` 和相關文件，寫明日期和理由。
 - 有時效的事實（價格、條款、模型排名、軟件功能）要附來源連結和核實日期，並更新 `docs/08-資料來源與核實狀態.md`。
 - 你不能開 PR 的話（例如 ChatGPT 網頁版），按 `proposals/_template.md` 的格式輸出建議，由擁有者存入 `proposals/`。
