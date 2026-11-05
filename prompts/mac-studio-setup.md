@@ -6,14 +6,16 @@
 
 | 次序 | 用甚麼 | 在哪個資料夾 | 做甚麼 | 會不會改東西 |
 |---|---|---|---|---|
-| P0 | Claude Code | `~/Projects` | 把 studio-kb 加進 Mac Studio，對照實際狀態報告差異 | 只 clone |
+| P0 ✅ | Claude Code | `~/Projects` | 把 studio-kb 加進 Mac Studio，對照實際狀態報告差異 | 只 clone |
 | P1 | Codex | `openclaw-to-hermes` | 維運 repo 加入和 studio-kb 的分工說明 | 只改該 repo 的 AGENTS、README |
-| P2 | Claude Code | `~/Projects/studio-kb` | 按 P0 的報告更新 studio-kb，開 PR | 開分支和 PR，你合併 |
+| P2 ✅ | Claude Code | `~/Projects/studio-kb` | 按 P0 的報告更新 studio-kb，開 PR | 開分支和 PR，你合併 |
 | P3 | Codex | `openclaw-to-hermes` | （之後）把 studio-kb 和遊戲 repo 註冊到 AO、加入 bridge allowlist | 改 AO 和 bridge 設定，要你批准 |
 
 ---
 
 ## P0 之前：你自己在終端機處理 GitHub 帳戶（約 2 分鐘）
+
+> **✅ 已完成（2026-11-05）：** active 已改為 `kahongchan`。公司帳戶仍登入，見 `docs/02` 待決 #16。
 
 2026-11-05 發現：`billychan` 的 `gh` 同時登入了公司帳戶和 `kahongchan`，而 active 的是公司帳戶。AO 和 agent 都在 `billychan` 下運行，預設會用到公司帳戶。
 
@@ -30,6 +32,8 @@ gh auth status                                                      # 確認只�
 ---
 
 ## P0：把 studio-kb 加進 Mac Studio（Claude Code，在 `~/Projects`）
+
+> **✅ 已完成（2026-11-05），不要重跑。** 和 P2 合併成一段 prompt 執行；結果見 PR #4、`docs/02` 背景事實和 `docs/15` 各階段「實際進度」。
 
 ```text
 你在我的 Mac Studio，macOS 帳戶 billychan（我 2026-11-03 決定暫時沿用這個帳戶，不要求改用 factory）。任務：把我的知識庫 kahongchan/studio-kb 加進這部機，然後對照這部機的實際狀態報告差異。除了 clone 和設定這個 repo 的 git 身份，不要修改任何東西：不用 sudo，不安裝軟件，不改系統、gh 帳戶、AO、Hermes 或 ao-bridge 設定，不 commit，不 push。GitHub 一律用 HTTPS 加 gh，不用 SSH。
@@ -72,6 +76,8 @@ gh auth status                                                      # 確認只�
 ---
 
 ## P2：按實際情況更新 studio-kb（Claude Code，在 `~/Projects/studio-kb`）
+
+> **✅ 已完成（2026-11-05，PR #4），不要重跑。** 日後 Mac Studio 有重大改變，可以照這段的做法再更新一次。
 
 ```text
 照 AGENTS.md 的規則：開分支 kb/<今日日期>-studio-reality，不要改 main。根據你在 P0 的報告（如果這是新 session，先重做 P0 第 3 至 5 步，但不要再 clone）更新 studio-kb：
