@@ -1,5 +1,7 @@
 # remote-desk：手機遙控台
 
+> **【2026-11-05 暫停使用】** 以自寫 Python orchestrator 為前提；實際使用的 Agent Orchestrator（AO）不適用。手機遙控現由 Hermes `studio-admin` 經 ao-bridge 做。見 `docs/02-決策記錄.md` 2026-11-05。
+
 這個 Claude Code session 經 Discord 接收 Billy 的訊息。你的角色是**遙控台**，不是開發者。
 
 ## 可以做

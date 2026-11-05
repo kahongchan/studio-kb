@@ -1,6 +1,6 @@
 # 15 Mac Studio 設定步驟
 
-> **2026-11-05 注意：本文件部分內容已過時，待更新（`prompts/mac-studio-setup.md` P2）。**
+> **2026-11-05 更新：每個階段加了「實際進度」（2026-11-05 Claude Code 在 `billychan` 唯讀實測，及 `openclaw-to-hermes` 有日期的紀錄）。** 狀態：✅ 完成、⬜ 未完成、↗ 改由 `openclaw-to-hermes` 處理、⏸ 暫停、❓ 未核實。原本的步驟保留不刪。
 > 實際情況：orchestrator 是 Agent Orchestrator（AO），不是 Python 腳本；工具暫時都在 `billychan` 帳戶，`factory` 未啟用；手機遙控已由 VPS 上的 Hermes `studio-admin` 經 ao-bridge 做到。第 4、5 階段以 Python orchestrator、`remote-desk`、Channels 為前提的步驟暫停使用。
 > 基建的即時狀態和操作紀錄以 `kahongchan/openclaw-to-hermes` 為準（`docs/LIVE-STATE.md`、`docs/08-MacStudio-Setup-and-Git-Sync.md`）。
 
@@ -23,6 +23,16 @@ Apple 新加坡的標準退貨期是收貨日起 **14 日**，要有收據、原
 ---
 
 ## 第 0 階段：開機、網絡、電源、遙距連線
+
+**實際進度（2026-11-05）**
+- ✅ 管理員帳戶：實際是 `billychan`（不是 `billy`），而且暫時用它跑全部工具（02 2026-11-05，本人 2026-11-03 決定）。
+- ✅ FileVault：On（`fdesetup status`）。
+- ❓ 軟件更新設定、有線網絡、DHCP 保留：未核實。
+- ⬜ 電腦名稱：仍是預設名稱，不是 `studio`。
+- ↗ 遠端登入、螢幕共享：2026-11-02 未開啟（[openclaw-to-hermes 08](https://github.com/kahongchan/openclaw-to-hermes/blob/main/docs/08-MacStudio-Setup-and-Git-Sync.md)）；這次未重查。
+- ✅ 電源：`sleep 0`、`autorestart 1`（`pmset -g custom`）；網絡喚醒未核實。
+- ❓ HDMI 假負載、UPS：未核實。
+- ↗ Tailscale：已安裝，Studio ↔ VPS 已連通（[LIVE-STATE](https://github.com/kahongchan/openclaw-to-hermes/blob/main/docs/LIVE-STATE.md) 2026-11-02、11-03）；完成標準（MacBook 經外網 SSH 和螢幕共享）未完成。
 1. **建立管理員帳戶**（開機設定時建立的第一個帳戶）：例如 `billy`。這個帳戶只做管理，不跑 agent。
    - Apple ID：可以在這個帳戶登入個人 Apple ID（用於「尋找」和軟件更新）；`factory` 不登入 Apple ID。
 2. **FileVault：開啟。** 復原密鑰抄下或存入密碼管理器，**不要**存入 `studio-kb`。
@@ -42,6 +52,13 @@ Apple 新加坡的標準退貨期是收貨日起 **14 日**，要有收據、原
 ---
 
 ## 第 1 階段：建立用戶、安裝工具
+
+**實際進度（2026-11-05）**
+- ⏸ `factory`：2026-11-03 已建立（標準帳戶），但未啟用；工具留在 `billychan`，搬遷是 02 待決 #21（[openclaw-to-hermes 08](https://github.com/kahongchan/openclaw-to-hermes/blob/main/docs/08-MacStudio-Setup-and-Git-Sync.md)）。
+- 部分 ✅ Homebrew 已安裝；Brewfile 中已有 gh、jq、node、uv；**未有** git-lfs、gitleaks、tmux、bun、macmon、LM Studio。
+- ✅ Claude Code 2.1.318、Codex CLI 0.166.0（都在 `billychan`）；⬜ Aider 未安裝。
+- ⬜ `autoUpdatesChannel`：`~/.claude/settings.json` 沒有這一項（24 小時無人運行前才需要）。
+- ❓ `03-verify.sh`：這次未執行。
 1. **建立 `factory` 用戶**（一般用戶，不是管理員）：
    ```bash
    bash mac-setup/02-create-user.sh factory "Factory"
@@ -71,6 +88,14 @@ Apple 新加坡的標準退貨期是收貨日起 **14 日**，要有收據、原
 ---
 
 ## 第 2 階段：帳戶和知識庫
+
+**實際進度（2026-11-05）**
+- ✅ `studio-kb` 私人 repo 已建立；❓ GitHub Pro 未核實；⬜ `main` 沒有 branch protection 或 ruleset（`gh api` 2026-11-05）。
+- ⏸ GitHub 機器帳戶：延後到搬去 `factory`（02 2026-11-05）。在 `billychan` 由本人互動時直接用 `kahongchan`。
+- ✅ `gh` active 已改為 `kahongchan`（2026-11-05）；⚠️ 公司帳戶仍登入（待決 #16）。
+- ✅ Claude：claude.ai 登入、Pro。✅ `ANTHROPIC_API_KEY`、`OPENAI_API_KEY` 都沒有設定。✅ Codex：用 ChatGPT 登入。
+- ✅ 知識庫：改用 HTTPS 加 `gh`，clone 到 `~/Projects/studio-kb`（不是 `~/studio`，不用 SSH）；push 經 `scripts/gh-personal.sh`。⬜ `install-hooks.sh` 未執行（gitleaks 未安裝）。
+- ⬜ 完成標準（`claude -p` 和 `codex exec` 讀 AGENTS.md 測試）：未做。
 全部用**個人**帳戶。公司帳戶不在這部機登入（直至公司同意並建立 `corp`）。
 
 **GitHub（在 MacBook 私人用戶或網頁做）**
@@ -98,6 +123,10 @@ cd studio-kb && bash scripts/install-hooks.sh
 ---
 
 ## 第 3 階段：退貨期內實測（第 12 日前完成）
+
+**實際進度（2026-11-05）**
+- ⬜ 未開始：LM Studio、macmon、Aider 都未安裝，T1～T5 未做。2026-11-03 收貨，按「第 12 日前」計是 **2026-11-14 或之前**（以收據日期為準）。
+- ✅ Unity Editor 已安裝 Unity 6（6000.6.7f1）和 2017.4.40f1，T2 的 Unity 部分可以做。
 目的：用真實工作量確認 128GB 夠用。這是 03 的「收貨後在退貨期內測試」。
 
 1. **在管理員帳戶開 LM Studio**，下載三個模型（MLX 4-bit）：Qwen3.8-27B、Qwen3-Coder-Next 80B-A3B、gpt-oss-120b。Server 只綁 `127.0.0.1`，context 設 64K（Hermes 和長任務要 64K）。
@@ -122,6 +151,12 @@ cd studio-kb && bash scripts/install-hooks.sh
 ---
 
 ## 第 4 階段：orchestrator 和第一個專案
+
+**實際進度（2026-11-05）**
+- ⏸ 第 1～3 步（Python `claude-local-orchestrator`、`config.toml`）：**暫停，待按 AO 和 Hermes 改寫**。實際的 orchestrator 是 AO 0.14.8（`ao status --json`：ready、health ok），見 04 第四部分。
+- ↗ AO 和 Hermes 的接入：由 `openclaw-to-hermes` 處理，見 [ao-bridge README](https://github.com/kahongchan/openclaw-to-hermes/blob/main/hermes-staging/ao-bridge/README.md)（2026-11-04 驗收）。
+- 部分 ✅ 第 4 步：Unity 6 Editor 已安裝（在 `billychan`）；⬜ `sotg-remake` repo 未建立。
+- ⬜ 第 5 步和完成標準：未開始。
 1. 把 `claude-local-orchestrator` 放入新的**私人** repo（例如 `studio-orchestrator`），clone 到 `~/studio/`。
 2. **模擬運行：** 用工具包內的模擬 Claude 和模擬本地 agent 跑一次（之前已測試過），確認在 Mac 上一樣可以跑。
 3. **真實運行（測試 repo）：** 建立一個小 Python repo，`plan "加一個計算傷害的函數和單元測試"` → `run-once`。看清楚每一步：Claude 規劃、Aider 用本地模型寫、測試、Claude 審查。
@@ -134,6 +169,11 @@ cd studio-kb && bash scripts/install-hooks.sh
 ---
 
 ## 第 5 階段：手機遙控
+
+**實際進度（2026-11-05）**
+- ⏸ 第 3～6 步（Channels、`remote-desk`、`start-sessions.sh`、orchestrator 通知）：**暫停，待按 AO 和 Hermes 改寫**。
+- ↗ 手機遙控已由 VPS 上的 Hermes `studio-admin`（Discord）經 ao-bridge 做到（[LIVE-STATE](https://github.com/kahongchan/openclaw-to-hermes/blob/main/docs/LIVE-STATE.md) 2026-11-03、11-04）。要不要再加 Channels 見 02 待決 #22。
+- ⬜ 第 1 步：仍是 Pro，未升級 Max 5x（02 待決 #23）。❓ 第 2、4 步未核實。
 1. **升級 Claude Max 5x**（開始 24 小時運行）。升級滿 7 日後，在 claude.ai Settings → Billing 連結一個 Console 組織，領取每月 US$100 API credit（暫時不用，留作後備，見待決 #12）。
 2. **Account 頁開啟「Require trusted devices」**，只有你信任的裝置可以連接 Remote Control。
 3. **Discord（官方 Channels）：**
@@ -152,6 +192,11 @@ cd studio-kb && bash scripts/install-hooks.sh
 ---
 
 ## 第 6 階段：之後才做
+
+**實際進度（2026-11-05）**
+- ↗ VPS 和 Hermes：已提早做，由 `openclaw-to-hermes` 維護。
+- ⏸ 多引擎 orchestrator：改由 AO 處理（04 第十四部分）。
+- ⬜ `corp` 用戶、Time Machine、外置 SSD：未做或未核實。
 - **多引擎 orchestrator**（加入 Codex：第一輪審查、第二層寫手、補測試，見 04 第十四部分）。可以叫 Claude 寫這部分程式碼。
 - **VPS 重置和 Hermes：** 只有在 Channels 不夠用時才做（例如想 Mac Studio 當機時仍收到訊息）。
 - **`corp` 用戶：** 公司同意後，用 `02-create-user.sh corp "Corp"` 建立，照 04 第十二部分設定。
