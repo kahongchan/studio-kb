@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- 【2026-11-05 暫停使用】以自寫 Python orchestrator 為前提，AO 不適用；見 docs/02-決策記錄.md 2026-11-05。 -->
 <!-- factory 登入 macOS 時執行 start-sessions.sh。放在 /Users/factory/Library/LaunchAgents/ -->
 <plist version="1.0">
 <dict>
