@@ -1,6 +1,8 @@
 # AGENTS.md：所有 AI 的共同規則
 
-這個 repo 是「一人 AI 遊戲工作室」的知識庫，是所有 AI（Claude、ChatGPT、Codex、Hermes、本地模型）共用的**唯一來源**。擁有者：Billy Chan。
+這個 repo 是「一人 AI 遊戲工作室」（代號 **REFORGE FRAME**，重鑄框架）的知識庫，是所有 AI（Claude、ChatGPT、Codex、Hermes、本地模型）共用的**唯一來源**。擁有者：Billy Chan。
+
+代號：整個專案叫 REFORGE FRAME；Sword of the Guardian 重製的格鬥引擎（連技、判定、影格數據）叫 GUARDIAN REFORGE。在文件、commit 和 PR 中可以直接用這兩個代號。
 
 ## 開始工作前
 1. 先讀 `docs/02-決策記錄.md`。它是目前狀態的唯一依據：已定的事不要重新推翻，除非有新資料令原本的理由不再成立；如果是這樣，要明確指出是哪條理由失效。
