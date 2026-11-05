@@ -1,6 +1,8 @@
-# studio-kb：一人 AI 遊戲工作室知識庫
+# studio-kb：REFORGE FRAME（重鑄框架）知識庫
 
 以 Claude、ChatGPT、Codex 和 Mac Studio 本地模型協作，由 AI 補足美術、動畫、數值和 QA，一人用 Unity 6 開發遊戲。第一步：重製 Sword of the Guardian（Steam 優先），驗證 AI 流程。
+
+**代號：** 整個專案叫 **REFORGE FRAME（重鑄框架）**；Sword of the Guardian 重製的格鬥引擎叫 **GUARDIAN REFORGE（守護者・重鑄）**。
 
 **這個 repo 是所有 AI 共用的唯一來源。** AI 的規則見 `AGENTS.md`；建立和連接步驟見 `SETUP.md`；方法說明見 `docs/14-AI共用檔案方法.md`。
 
