@@ -34,6 +34,14 @@
 2. ChatGPT 的 GitHub 讀取是唯讀的；部分方案只在 deep research 或 agent 模式可用。在一般對話用不到時，下載 `docs/` 的檔案上傳到 ChatGPT Project。
 3. ChatGPT Project 的指示加入 `proposals/README.md` 最後那一句。
 
+**Claude Code 和 Codex（Mac Studio 上，共用 `~/Projects/studio-kb`）**
+- 兩者都沒有「專案清單」要登記：在哪個資料夾開啟，那個資料夾就是專案。
+- Claude Code：`cd ~/Projects/studio-kb && claude`，或在桌面 app 的 Code 分頁選這個資料夾。它讀 `CLAUDE.md`，經 `@AGENTS.md` 讀入共同規則。
+- Codex：`cd ~/Projects/studio-kb && codex`，第一次會問是否信任這個資料夾，答「信任」；Codex app 則加入同一個資料夾。它直接讀 `AGENTS.md`。
+- 確認方法：問它「這個 repo 的修改規則是甚麼？」，兩者都應該答「開分支和 PR，由擁有者合併」。
+- 共用規則見 `AGENTS.md`「修改規則」：同一時間只有一個 agent 修改；要並行就用 `git worktree`。
+- 分工：`studio-kb` 主要由 Claude Code 維護；Codex 在這裡主要是閱讀，以及在被要求時開 PR（例如寫入實測結果）。
+
 ## 第 2 步：Mac Studio（到手後）
 > 完整的 Mac Studio 設定（電源、用戶、工具、實測、手機遙控）見 `docs/15-Mac-Studio設定步驟.md`。以下只是 studio-kb 相關的部分。
 
