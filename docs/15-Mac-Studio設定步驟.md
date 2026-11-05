@@ -1,5 +1,9 @@
 # 15 Mac Studio 設定步驟
 
+> **2026-11-05 注意：本文件部分內容已過時，待更新（`prompts/mac-studio-setup.md` P2）。**
+> 實際情況：orchestrator 是 Agent Orchestrator（AO），不是 Python 腳本；工具暫時都在 `billychan` 帳戶，`factory` 未啟用；手機遙控已由 VPS 上的 Hermes `studio-admin` 經 ao-bridge 做到。第 4、5 階段以 Python orchestrator、`remote-desk`、Channels 為前提的步驟暫停使用。
+> 基建的即時狀態和操作紀錄以 `kahongchan/openclaw-to-hermes` 為準（`docs/LIVE-STATE.md`、`docs/08-MacStudio-Setup-and-Git-Sync.md`）。
+
 > 2026-11-03 Mac Studio 到手。腳本在 `mac-setup/`；先讀腳本再執行。
 > 原則：每一階段達到「完成標準」才做下一階段。公司的 `corp` 用戶等公司同意後才建立（待決 #16）。
 
