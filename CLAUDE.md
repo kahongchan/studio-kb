@@ -11,3 +11,4 @@
 ```
 
 - 用 Claude Code 寫入時：開分支 → 修改 → 開 PR，PR 說明寫明來源（哪一次討論、哪個 proposal）。
+- **PR 由你自己建立，不要叫 Billy 開。** Billy 只負責審閱和合併。在 Mac Studio 上用 `bash scripts/gh-personal.sh gh pr create ...`，確保用個人帳戶 kahongchan。

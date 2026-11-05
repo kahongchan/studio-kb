@@ -13,13 +13,35 @@
 
 ---
 
+## P0 之前：你自己在終端機處理 GitHub 帳戶（約 2 分鐘）
+
+2026-11-05 發現：`billychan` 的 `gh` 同時登入了公司帳戶和 `kahongchan`，而 active 的是公司帳戶。AO 和 agent 都在 `billychan` 下運行，預設會用到公司帳戶。
+
+```bash
+gh auth status                                                      # 看清楚兩個帳戶
+gh auth switch --hostname github.com --user kahongchan              # 預設改為個人帳戶
+gh auth logout --hostname github.com --user <公司帳戶名稱>           # 建議：公司帳戶離開 Mac Studio
+gh auth status                                                      # 確認只剩 kahongchan，或 kahongchan 是 active
+```
+- 建議登出公司帳戶：公司同意之前，公司帳戶不放上 Mac Studio（待決 #16）。日後公司同意，就在獨立的 `corp` macOS 用戶登入。
+- 如果現在 Mac Studio 上有公司工作正在用這個帳戶，可以暫時只做 `switch`，不做 `logout`，但要盡快搬到 `corp`。
+- 不用理 `ssh -T git@github.com` 的 host key 錯誤：這部機的 GitHub 一律用 HTTPS 加 `gh`，和 `openclaw-to-hermes` 一樣。
+
+---
+
 ## P0：把 studio-kb 加進 Mac Studio（Claude Code，在 `~/Projects`）
 
 ```text
-你在我的 Mac Studio，macOS 帳戶 billychan。任務：把我的知識庫 kahongchan/studio-kb 加進這部機，然後對照這部機的實際狀態報告差異。除了 clone，不要修改任何東西：不用 sudo，不安裝軟件，不改系統、AO、Hermes 或 ao-bridge 設定，不 commit，不 push。
+你在我的 Mac Studio，macOS 帳戶 billychan（我 2026-11-03 決定暫時沿用這個帳戶，不要求改用 factory）。任務：把我的知識庫 kahongchan/studio-kb 加進這部機，然後對照這部機的實際狀態報告差異。除了 clone 和設定這個 repo 的 git 身份，不要修改任何東西：不用 sudo，不安裝軟件，不改系統、gh 帳戶、AO、Hermes 或 ao-bridge 設定，不 commit，不 push。GitHub 一律用 HTTPS 加 gh，不用 SSH。
 
-1. GitHub 身份：執行 `gh auth status`，報告有哪些帳戶、哪個是 active（不要顯示 token）。這個 repo 只可以用個人帳戶 kahongchan。如果 active 不是 kahongchan，不要切換全機的預設帳戶；先找出這部機上的 openclaw-to-hermes 工作副本，讀它的 hermes-staging/sync_before_work.py，看它怎樣只在子程序用 kahongchan，再照同樣方法 clone，並告訴我你用了甚麼方法。發現任何公司帳戶的憑證就停下來告訴我。
-2. clone 到 ~/Projects/studio-kb；如果已經存在，只執行 git fetch 並報告狀態。repo-local 的 user.name 和 user.email 設成和 openclaw-to-hermes 一樣的 kahongchan noreply 身份。
+1. GitHub 身份：執行 `gh auth status`，報告有哪些帳戶、哪個是 active（不要顯示 token）。這個 repo 只可以用個人帳戶 kahongchan，現階段由我本人互動使用，不需要機器帳戶。
+   - active 是 kahongchan：繼續。
+   - active 是公司帳戶：停下來，叫我先照 prompts/mac-studio-setup.md「P0 之前」處理。
+   - 公司帳戶有登入但不是 active：繼續，但不可以用它做任何事，並在報告中列為風險。
+2. clone：只在這個指令的程序用 kahongchan，不改全機設定：
+   cd ~/Projects && GH_TOKEN="$(gh auth token --hostname github.com --user kahongchan)" GH_HOST=github.com gh repo clone kahongchan/studio-kb
+   如果 ~/Projects/studio-kb 已經存在，只執行 git fetch 並報告狀態。然後在這個 repo 設定 repo-local 的 user.name 和 user.email，用和 openclaw-to-hermes 工作副本相同的 kahongchan noreply 身份（從它的 repo-local git config 讀取）。
+   之後在這個 repo push 或開 PR，一律經 scripts/gh-personal.sh 執行（例如 bash scripts/gh-personal.sh git push），不要依賴全機的 gh 預設帳戶。
 3. 讀 studio-kb 的 AGENTS.md、docs/02-決策記錄.md、docs/04-AI分工與自動化架構.md、docs/15-Mac-Studio設定步驟.md；再讀 openclaw-to-hermes 的 AGENTS.md、docs/LIVE-STATE.md、docs/08-MacStudio-Setup-and-Git-Sync.md、docs/09-Studio-Claude-Multi-Account-Plan.md、hermes-staging/ao-bridge/README.md。
 4. 執行唯讀檢查：claude --version、claude auth status（只答登入方式和方案，不顯示電郵以外的識別資料）、codex --version、AO 的 `ao status --json`（只摘要健康狀態）、echo 檢查 ANTHROPIC_API_KEY 和 OPENAI_API_KEY 有沒有設定（只答有或沒有）、pmset -g custom 的 sleep 和 autorestart、fdesetup status。
 5. 用表格報告：
@@ -63,7 +85,10 @@
 4. docs/15：每個階段加「實際進度」，標明已完成、未完成、已改由 openclaw-to-hermes 處理（連結到它的文件）。第 4、5 階段中 Python orchestrator、remote-desk、Channels 的內容標為「暫停，待按 AO 和 Hermes 改寫」。
 5. mac-setup/start-sessions.sh 和 mac-setup/remote-desk/：在檔頭註明「以 Python orchestrator 為前提，AO 不適用，暫停使用」，不要刪除。
 6. docs/08 加入你在 P0 核實過的來源和日期。
-7. commit（如果 gitleaks 已安裝，會在 commit 前自動檢查），push 這個分支，給我開 PR 的連結。不要合併。
+7. commit（如果 gitleaks 已安裝，會在 commit 前自動檢查），然後用個人帳戶 push 和開 PR：
+   bash scripts/gh-personal.sh git push -u origin <分支>
+   bash scripts/gh-personal.sh gh pr create --base main --title "<標題>" --body "<改了甚麼、來源>"
+   把 PR 連結給我。不要合併。
 ```
 
 ---
