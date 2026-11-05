@@ -30,7 +30,7 @@
 
 ## 四、本人補充（2026-10-11）
 - **資產授權：** 沒有特定合同限制，可以用於續作；**音樂除外**（要重新製作）。
-- **原始專案檔和資產：** 應該仍然保存，待找到後補上。
+- **原始專案檔和資產：** 2026-11-05 已找到，拷貝到 Mac Studio `~/Projects/Sword of the Guardian source/`。概況見第九部分。
 - **Steamworks 和 Nintendo 開發者帳戶：** 不確定，很久沒有使用，待確認。
 - **原本的設計目標：** 類似《魔龍寶冠》（Dragon's Crown）的升級打寶清版動作。但升級和裝備系統難以合理地融入故事，一個人也幾乎不可能完成數值測試，最後只能以純動作過關推出。
 - **放棄的功能：** 網上多人連線。
@@ -116,6 +116,13 @@
 ## 九、仍待確認
 - [ ] 找回原始專案檔、3D 模型、動畫
   - 2026-11-05 本人補充：私人 GitHub repo `kahongchan/SOG3D`（最後更新 2022-02）是實驗專案，由舊專案拷貝少量程式碼作新版測試，**不是原始專案**。可以作為參考（例如搓招、連技、命中判定的舊程式碼），但不會直接沿用。原始專案仍要另外找。
+  - **2026-11-05 已找到原始專案**，本人拷貝到 Mac Studio `~/Projects/Sword of the Guardian source/`。Claude 只讀檢查（未開 Unity、未改任何檔案）：
+    - 是 **SVN 工作副本**（有 `.svn/`，`wc.db` 約 140MB），不是 Git。工作副本只有最後一個版本；**完整版本歷史在當年的 SVN 伺服器**，現在還能不能連上未確認。
+    - 是完整的 Unity 專案（`Assets/`、`ProjectSettings/`），沒有 `Library/`（第一次開會重新匯入，要一段時間）。Unity 版本見 `ProjectSettings/ProjectVersion.txt`，**未讀**；Mac Studio 已裝 Unity 2017.4.40f1，相信是對應版本，待本人確認。
+    - 同一個資料夾有多個平台的方案檔：Steam、UWP、Xbox One（`X1`）、Switch（`_switch`），還有 `ERA` 版本。
+    - 有大量 Asset Store 付費插件和素材（例如 Rewired、NGUI、TextMesh Pro、ProCamera2D、I2 Localization、DOTween、Xffect、多個特效和音效包）。
+    - **敏感內容**：`Assets/NintendoSDKPlugin/`（Nintendo 開發者協議下的 SDK）、`Assets/XboxOne_Localization/`、`Assets/WSATestCertificate.pfx`（UWP 簽名證書）。這些**不可以**放上 GitHub 或交給雲端 AI；放 Git 前要先排除。
+    - 原本的拷貝來源（本人找到的地方）保持不動，作為第二份備份。
 - [ ] Steamworks 和 Nintendo 開發者帳戶狀態
 
 ## 來源
