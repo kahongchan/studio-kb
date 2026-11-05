@@ -10,10 +10,10 @@
 ## 執行次序（2026-11-05 起）
 | 週 | 做甚麼 | 誰 | 完成標準 |
 |---|---|---|---|
-| 現在 | 鑰匙圈 github.com 憑證屬誰；是否登出公司 GitHub 帳戶（#16）；GitHub Pro 和 `main` 保護（#17） | 本人 | 只剩 `kahongchan` 可以寫私人 repo；`main` 要經 PR |
+| 現在 | 鑰匙圈 github.com 憑證屬誰；是否登出公司 GitHub 帳戶（#16） | 本人 | 只剩 `kahongchan` 可以寫私人 repo |
 | 至 11-14 | 第 3 階段實測 T1～T5（`prompts/mac-studio-setup.md` P5） | Codex | 表格填好，#18 決定留下或退貨 |
 | 實測後 | 決定 AO 上的開發流程：規劃、寫、審查、合併各由誰做；建立 `sotg-remake`；註冊到 AO 和 ao-bridge（P3） | Claude Code（設計）、Codex（基建） | 第一張真實任務經 AO 完成，PR 由本人合併 |
-| 24 小時運行前 | 工具和 AO 搬到 `factory`（#21）；GitHub 機器帳戶；升級 Max 5x（#23） | 本人、Codex | 無人看管的 agent 不在管理員帳戶，不用個人 GitHub 帳戶 |
+| 24 小時運行前 | 工具和 AO 搬到 `factory`（#21）；GitHub 機器帳戶；決定是否升級 GitHub Pro 保護 `main`（#17）；升級 Max 5x（#23） | 本人、Codex | 無人看管的 agent 不在管理員帳戶，不用個人 GitHub 帳戶 |
 
 ## 最重要的期限：退貨期 14 日
 Apple 新加坡的標準退貨期是收貨日起 **14 日**，要有收據、原裝配件和包裝。所以**第三階段（實測）一定要在第 12 日前完成**，用實測結果決定留下 M5 Max 128GB，還是退貨改買 M5 Ultra 256GB。包裝盒先不要丟。
