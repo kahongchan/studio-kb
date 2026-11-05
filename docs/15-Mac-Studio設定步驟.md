@@ -84,7 +84,7 @@ Apple 新加坡的標準退貨期是收貨日起 **14 日**，要有收據、原
 **知識庫**
 ```bash
 mkdir -p ~/studio && cd ~/studio
-git clone git@github.com:<你的帳戶>/studio-kb.git
+git clone git@github.com:kahongchan/studio-kb.git
 cd studio-kb && bash scripts/install-hooks.sh
 ```
 然後照 `SETUP.md` 第 1 步，連接 Claude Project 和 ChatGPT。

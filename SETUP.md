@@ -5,7 +5,7 @@
 ## 第 0 步：建立 repo（約 10 分鐘）
 1. 用個人 GitHub 帳戶建立私人 repo `studio-kb`。**不要**勾選加入 README、.gitignore 或 license（保持空白）。
 2. 二選一：
-   - **由 Claude 推上：** 把 repo 名稱（`你的帳戶/studio-kb`）告訴 Claude，Claude 連接 repo（需要你批准），推上全部檔案。
+   - **由 Claude 推上：** 把 repo 名稱（`kahongchan/studio-kb`）告訴 Claude，Claude 連接 repo（需要你批准），推上全部檔案。
    - **自己推上：** 下載骨架 zip，解壓後在 MacBook 的**私人** macOS 用戶執行：
      ```bash
      cd studio-kb
@@ -13,7 +13,7 @@
      git config core.quotepath false
      git add .
      git commit -m "建立 studio-kb"
-     git remote add origin git@github.com:<你的帳戶>/studio-kb.git
+     git remote add origin git@github.com:kahongchan/studio-kb.git
      git push -u origin main
      ```
 3. 建議升級 GitHub Pro（每月 US$4）。私人 repo 的 branch protection 要 Pro 或以上。
@@ -42,7 +42,7 @@
 3. 在 `factory` macOS 用戶：
    ```bash
    mkdir -p ~/studio && cd ~/studio
-   git clone git@github.com:<你的帳戶>/studio-kb.git
+   git clone git@github.com:kahongchan/studio-kb.git
    cd studio-kb && bash scripts/install-hooks.sh
    ```
 4. 遊戲 repo 的 `AGENTS.md` 加一句：「專案背景和決策見 `../studio-kb/AGENTS.md` 和 `../studio-kb/docs/02-決策記錄.md`」。
