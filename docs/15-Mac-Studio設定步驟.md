@@ -90,7 +90,7 @@ Apple 新加坡的標準退貨期是收貨日起 **14 日**，要有收據、原
 ## 第 2 階段：帳戶和知識庫
 
 **實際進度（2026-11-05）**
-- ✅ `studio-kb` 私人 repo 已建立；❓ GitHub Pro 未核實；⬜ `main` 沒有 branch protection 或 ruleset（`gh api` 2026-11-05）。
+- ✅ `studio-kb` 私人 repo 已建立；⏸ GitHub Pro 暫不升級（本人 2026-11-05，待決 #17），所以 `main` 暫時沒有 branch protection，靠 `AGENTS.md` 的 PR 規則。
 - ⏸ GitHub 機器帳戶：延後到搬去 `factory`（02 2026-11-05）。在 `billychan` 由本人互動時直接用 `kahongchan`。
 - ✅ `gh` active 已改為 `kahongchan`（2026-11-05）；⚠️ 公司帳戶仍登入（待決 #16）。
 - ✅ Claude：claude.ai 登入、Pro。✅ `ANTHROPIC_API_KEY`、`OPENAI_API_KEY` 都沒有設定。✅ Codex：用 ChatGPT 登入。
@@ -99,7 +99,7 @@ Apple 新加坡的標準退貨期是收貨日起 **14 日**，要有收據、原
 全部用**個人**帳戶。公司帳戶不在這部機登入（直至公司同意並建立 `corp`）。
 
 **GitHub（在 MacBook 私人用戶或網頁做）**
-1. 升級 GitHub Pro（每月 US$4），私人 repo 才有 branch protection。
+1. ~~升級 GitHub Pro~~：暫不升級（待決 #17），到開機器帳戶時再決定。
 2. 建立空白私人 repo `studio-kb`。把名稱告訴 Claude 推上去，或照 `SETUP.md` 第 0 步自己推。
 3. `main` 加規則：Require a pull request before merging。
 4. 開 GitHub 機器帳戶（要另一個電郵），邀請為 `studio-kb` 的協作者。
